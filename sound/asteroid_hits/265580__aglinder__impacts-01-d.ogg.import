@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/265580__aglinder__impacts-01-d.ogg-71b64113d82033fe3137abd3471bfddf.oggstr"
+
+[deps]
+
+source_file="res://sound/asteroid_hits/265580__aglinder__impacts-01-d.ogg"
+dest_files=[ "res://.import/265580__aglinder__impacts-01-d.ogg-71b64113d82033fe3137abd3471bfddf.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

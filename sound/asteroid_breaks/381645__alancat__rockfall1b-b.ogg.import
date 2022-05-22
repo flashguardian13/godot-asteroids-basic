@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/381645__alancat__rockfall1b-b.ogg-2aa45b6f5084c6a8e3f01a0f17e6bb66.oggstr"
+
+[deps]
+
+source_file="res://sound/asteroid_breaks/381645__alancat__rockfall1b-b.ogg"
+dest_files=[ "res://.import/381645__alancat__rockfall1b-b.ogg-2aa45b6f5084c6a8e3f01a0f17e6bb66.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
