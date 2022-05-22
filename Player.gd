@@ -1,13 +1,28 @@
 extends Area2D
 
-export (int) var thrust = 25
-export (float) var rotation_speed = 5
+export (int) var thrust = 5
+export (float) var linear_velocity_max = 500
+export (float) var rotation_speed = 3
+export (float) var linear_damping = 0.1
 export (float) var border_width = 20
 
 var velocity = Vector2()
 
+signal destroyed
+
 func _ready():
-	pass # Replace with function body.
+	pass
+
+func make_incorporeal():
+	$Sprite.modulate = Color(1,1,1,0.5)
+	monitoring = false
+	monitorable = false
+	$SpawnTimer.start(3)
+
+func make_corporeal():
+	$Sprite.modulate = Color(1,1,1,1)
+	monitoring = true
+	monitorable = true
 
 func get_inputs():
 	var thrust_dir = 0
@@ -32,7 +47,15 @@ func _physics_process(delta):
 	
 	if inputs["thrust"] != 0:
 		velocity += Vector2(0, inputs["thrust"] * thrust).rotated(rotation)
-	velocity -= velocity * 1 * delta
+		if !$ThrusterLoopPlayer2D.playing:
+			print("fire!")
+			$ThrusterLoopPlayer2D.play()
+	else:
+		if $ThrusterLoopPlayer2D.playing:
+			$ThrusterLoopPlayer2D.stop()
+			print("cease fire!")
+	velocity -= velocity * linear_damping * delta
+	velocity = velocity.clamped(linear_velocity_max)
 	
 	position += velocity * delta
 	
@@ -45,6 +68,15 @@ func _physics_process(delta):
 	if position.y > get_viewport_rect().size.y + border_width:
 		position.y = position.y - get_viewport_rect().size.y - border_width * 2
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	pass
+
+func _on_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
+	if area.collision_layer == 1 << 0:
+		print("Player hit ... xemself?????")
+	elif area.collision_layer == 1 << 1:
+		position.x = rand_range(0, get_viewport_rect().size.x)
+		position.y = rand_range(0, get_viewport_rect().size.y)
+		emit_signal("destroyed", self)
+	elif area.collision_layer == 1 << 2:
+		print("Player hit ... their own bullet, this should not be possible.")
