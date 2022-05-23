@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://images/ship_1.png" type="Texture" id=2]
-[ext_resource path="res://sound/146770__qubodup__rocket-boost-engine-loop.wav" type="AudioStream" id=3]
+[ext_resource path="res://sound/ThrusterLoop.tres" type="AudioStream" id=3]
 
 [node name="Player" type="Area2D"]
 visible = false

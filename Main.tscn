@@ -31,6 +31,7 @@ size = Vector2( 1024, 528 )
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3
+audio_listener_enable_2d = true
 
 [node name="Game" parent="VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 1 )]
 

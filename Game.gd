@@ -4,6 +4,21 @@ export(PackedScene) var asteroid_scene
 export(PackedScene) var player_bullet_scene
 export(PackedScene) var player_scene
 
+export(AudioStream) var blaster_fire
+
+class AudioStreamPool:
+	var pool : Array
+	
+	func add(path):
+		var res = ResourceLoader.load(path, "AudioStream")
+		pool.push_back(res)
+
+	func sample():
+		return pool[randi() % pool.size()]
+
+var asteroid_hit_sound_pool : AudioStreamPool
+var asteroid_break_sound_pool : AudioStreamPool
+
 var ships_remaining = 3
 var score = 0
 var level = 1
@@ -19,6 +34,19 @@ signal game_over
 
 func _ready():
 	randomize()
+	
+	asteroid_hit_sound_pool = AudioStreamPool.new()
+	var i = 1
+	while i <= 8:
+		asteroid_hit_sound_pool.add("res://sound/AsteroidHits/AsteroidHit0%s.tres" % i)
+		i += 1
+	
+	asteroid_break_sound_pool = AudioStreamPool.new()
+	i = 1
+	while i <= 3:
+		asteroid_break_sound_pool.add("res://sound/AsteroidBreaks/AsteroidBreak0%s.tres" % i)
+		i += 1
+	
 
 func clear():
 	for child in get_children():
@@ -105,18 +133,28 @@ func spawn_asteroid(size_category, position = null, velocity = null):
 	asteroid.size_category = size_category
 	if size_category == 1:
 		asteroid.scale = Vector2(0.33, 0.33)
+		asteroid.health = 1
 	elif size_category == 2:
 		asteroid.scale = Vector2(0.67, 0.67)
+		asteroid.health = 3
+	elif size_category == 3:
+		asteroid.health = 9
 		
+	asteroid.connect("damaged", self, "hit_asteroid")
 	asteroid.connect("destroyed", self, "split_asteroid")
 	
 	add_child(asteroid)
 	
 	return asteroid
 
-func split_asteroid(asteroid):
+func hit_asteroid(_asteroid, impact_position):
+	play_sound_at_position(asteroid_hit_sound_pool.sample(), impact_position)
+	
+func split_asteroid(asteroid, impact_position):
 	score += 100
 	emit_signal("score_changed", score)
+	
+	play_sound_at_position(asteroid_break_sound_pool.sample(), impact_position)
 	
 	if asteroid.size_category <= 1:
 		return
@@ -141,12 +179,24 @@ func split_asteroid(asteroid):
 				asteroid.siblings.push_back(other_asteroid)
 
 func spawn_player_bullet():
+	if player_ship == null:
+		return
+	
 	var bullet = player_bullet_scene.instance()
 	bullet.position = player_ship.position
 	bullet.rotation = player_ship.rotation
 	bullet.velocity = Vector2(600.0, 0.0).rotated(player_ship.rotation - PI * 0.5)
 	bullet.lifespan = 0.5
 	add_child(bullet)
+	play_sound_at_position(blaster_fire, player_ship.position)
+
+func play_sound_at_position(stream : AudioStream, position : Vector2):
+	var sound:AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+	sound.stream = stream
+	sound.position = position
+	add_child(sound)
+	sound.connect("finished", sound, "queue_free")
+	sound.play()
 
 func _input(ev):
 	if ev is InputEventKey:

@@ -48,12 +48,10 @@ func _physics_process(delta):
 	if inputs["thrust"] != 0:
 		velocity += Vector2(0, inputs["thrust"] * thrust).rotated(rotation)
 		if !$ThrusterLoopPlayer2D.playing:
-			print("fire!")
 			$ThrusterLoopPlayer2D.play()
 	else:
 		if $ThrusterLoopPlayer2D.playing:
 			$ThrusterLoopPlayer2D.stop()
-			print("cease fire!")
 	velocity -= velocity * linear_damping * delta
 	velocity = velocity.clamped(linear_velocity_max)
 	
