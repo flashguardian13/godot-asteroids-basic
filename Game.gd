@@ -37,14 +37,14 @@ func _ready():
 	
 	asteroid_hit_sound_pool = AudioStreamPool.new()
 	var i = 1
-	while i <= 8:
-		asteroid_hit_sound_pool.add("res://sound/AsteroidHits/AsteroidHit0%s.tres" % i)
+	while i <= 9:
+		asteroid_hit_sound_pool.add("res://sound/asteroid_hits/AsteroidHit0%s.tres" % i)
 		i += 1
 	
 	asteroid_break_sound_pool = AudioStreamPool.new()
 	i = 1
-	while i <= 3:
-		asteroid_break_sound_pool.add("res://sound/AsteroidBreaks/AsteroidBreak0%s.tres" % i)
+	while i <= 4:
+		asteroid_break_sound_pool.add("res://sound/asteroid_breaks/AsteroidBreak0%s.tres" % i)
 		i += 1
 	
 
