@@ -19,10 +19,13 @@ class AudioStreamPool:
 var asteroid_hit_sound_pool : AudioStreamPool
 var asteroid_break_sound_pool : AudioStreamPool
 
+var exclamations = ["Oops!", "Ouch!", "Doh!", "Bummer!", "Wipeout!", "Nooo!"]
+
 var ships_remaining = 3
 var score = 0
 var level = 1
 var active = false
+var is_level_in_progress = false
 
 var main : Node2D
 var player_ship : Area2D
@@ -49,13 +52,12 @@ func _ready():
 	
 
 func clear():
-	for child in get_children():
-		if child != $Overlay && child != player_ship:
-			remove_child(child)
-			child.queue_free()
+	for asteroid in get_tree().get_nodes_in_group("asteroids"):
+		remove_child(asteroid)
+		asteroid.queue_free()
 
 func new_game():
-	ships_remaining = 3
+	ships_remaining = 2
 	emit_signal("ship_count_changed", ships_remaining)
 	score = 0
 	emit_signal("score_changed", score)
@@ -63,30 +65,34 @@ func new_game():
 	emit_signal("level_changed", level)
 	active = true
 	
-	populate()
+	clear()
+	spawn_player("center")
 
 	var announcer = get_node("Overlay/AnnouncerLabel")
 	announcer.show_message("3 ...", 1)
 	announcer.show_message("2 ...", 1)
 	announcer.show_message("1 ...", 1)
 	announcer.show_message("Go!", 1)
-	main.schedule_call(3, self, "spawn_player")
+	main.schedule_call(3, self, "populate")
 
-func spawn_player():
+func spawn_player(spawn_location = "random"):
 	player_ship = player_scene.instance()
-	player_ship.position.x = get_viewport().size.x * 0.5
-	player_ship.position.y = get_viewport().size.y * 0.5
+	if spawn_location == "center":
+		player_ship.position.x = get_viewport().size.x * 0.5
+		player_ship.position.y = get_viewport().size.y * 0.5
+	else:
+		player_ship.position.x = rand_range(0, get_viewport_rect().size.x)
+		player_ship.position.y = rand_range(0, get_viewport_rect().size.y)
 	player_ship.rotation = 0
 	player_ship.velocity.x = 0
 	player_ship.velocity.y = 0
 	player_ship.visible = true
 	player_ship.make_incorporeal()
+	main.schedule_call(3, player_ship, "make_corporeal")
 	player_ship.connect("destroyed", self, "_on_player_destroyed")
 	add_child(player_ship)
 
 func populate():
-	clear()
-			
 	var difficulty = 5 + level
 	while difficulty > 0:
 		var asteroid_size = 3
@@ -94,14 +100,26 @@ func populate():
 			asteroid_size = difficulty
 		spawn_asteroid(asteroid_size)
 		difficulty -= asteroid_size
+	
+	is_level_in_progress = true
 
 func _process(delta):
 	var asteroids = get_tree().get_nodes_in_group("asteroids")
-	if asteroids.size() <= 0:
+	if is_level_in_progress && asteroids.size() <= 0:
+		is_level_in_progress = false
+		
+		var announcer = get_node("Overlay/AnnouncerLabel")
+		announcer.show_message("Clear!", 2)
+		
 		level += 1
 		emit_signal("level_changed", level)
-		populate()
-		get_node("Overlay/AnnouncerLabel").show_message(("Level %s" % level), 3)
+		announcer.show_message("Level %s" % level, 2)
+		
+		announcer.show_message("3 ...", 1)
+		announcer.show_message("2 ...", 1)
+		announcer.show_message("1 ...", 1)
+		announcer.show_message("Go!", 1)
+		main.schedule_call(7, self, "populate")
 
 func spawn_asteroid(size_category, position = null, velocity = null):
 	var asteroid : Area2D = asteroid_scene.instance()
@@ -205,11 +223,18 @@ func _input(ev):
 			spawn_player_bullet()
 
 func _on_player_destroyed(_player):
+	var announcer = get_node("Overlay/AnnouncerLabel")
+	var exclamation = exclamations[randi() % exclamations.size()]
+	
+	remove_child(player_ship)
+	player_ship.queue_free()
+	player_ship = null
+	announcer.show_message(exclamation, 3)
+	
 	if ships_remaining > 0:
 		ships_remaining -= 1
 		emit_signal("ship_count_changed", ships_remaining)
-		if ships_remaining <= 0:
-			player_ship.visible = false
-			active = false
-			emit_signal("game_over")
-			get_node("Overlay/AnnouncerLabel").show_message("Game over", 3)
+		main.schedule_call(3, self, "spawn_player")
+	else:
+		announcer.show_message("Game over", 5)
+		main.schedule_call(8, self, "emit_signal", ["game_over"])

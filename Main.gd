@@ -37,12 +37,10 @@ func on_new_pressed():
 	pause_popup.is_game_active = true
 
 func on_play_pressed():
-	if game.active:
-		hide_game_menu()
-	else:
+	hide_game_menu()
+	if !game.active:
 		game.new_game()
 		pause_popup.is_game_active = true
-		hide_game_menu()
 
 func on_quit_pressed():
 	get_tree().quit()
@@ -84,6 +82,7 @@ func schedule_call(delay_seconds, obj, method_name, args = []):
 	scheduled_calls.push_back(call)
 
 func on_game_over():
+	game.active = false
 	pause_popup.is_game_active = false
 	show_game_menu()
 

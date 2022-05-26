@@ -17,7 +17,6 @@ func make_incorporeal():
 	$Sprite.modulate = Color(1,1,1,0.5)
 	monitoring = false
 	monitorable = false
-	$SpawnTimer.start(3)
 
 func make_corporeal():
 	$Sprite.modulate = Color(1,1,1,1)
@@ -73,8 +72,6 @@ func _on_area_shape_entered(area_rid, area, area_shape_index, local_shape_index)
 	if area.collision_layer == 1 << 0:
 		print("Player hit ... xemself?????")
 	elif area.collision_layer == 1 << 1:
-		position.x = rand_range(0, get_viewport_rect().size.x)
-		position.y = rand_range(0, get_viewport_rect().size.y)
 		emit_signal("destroyed", self)
 	elif area.collision_layer == 1 << 2:
 		print("Player hit ... their own bullet, this should not be possible.")
