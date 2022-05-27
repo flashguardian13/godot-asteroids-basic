@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/179537__clinthammer__clinthammermusic-robot-nap-percussion.mp3-1009a55a24e3c1f8fa031396776bd572.mp3str"
+
+[deps]
+
+source_file="res://sound/music/179537__clinthammer__clinthammermusic-robot-nap-percussion.mp3"
+dest_files=[ "res://.import/179537__clinthammer__clinthammermusic-robot-nap-percussion.mp3-1009a55a24e3c1f8fa031396776bd572.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

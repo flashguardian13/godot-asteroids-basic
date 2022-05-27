@@ -5,6 +5,33 @@ export(AudioStream) var game_over
 
 export(AudioStream) var menu_select
 
+export(AudioStream) var title_song
+
+class GameMusicSet:
+	var pool : Array
+	var index : int
+	
+	func add(path):
+		var res = ResourceLoader.load(path, "AudioStream")
+		pool.push_back(res)
+
+	func shuffle():
+		index = 0
+		var randomized_set : Array = []
+		while pool.size() > 0:
+			var song = pool.pop_at(randi() % pool.size())
+			randomized_set.push_back(song)
+		pool = randomized_set
+	
+	func get_current_song():
+		return pool[index]
+		
+	func get_next_song():
+		index = (index + 1) % pool.size()
+		return pool[index]
+
+var game_music_set : GameMusicSet
+
 var game : Node2D
 var gui : MarginContainer
 var pause_popup : PopupPanel
@@ -13,6 +40,18 @@ var scheduled_calls : Array
 var elapsed_time : float
 
 func _ready():
+	game_music_set = GameMusicSet.new()
+	game_music_set.add("res://sound/music/GameLoop_Clinthammer_ElectroBeat2.tres")
+	game_music_set.add("res://sound/music/GameLoop_Clinthammer_ElectroBeat.tres")
+	game_music_set.add("res://sound/music/GameLoop_Clinthammer_LightGlitchSteppa.tres")
+	game_music_set.add("res://sound/music/GameLoop_Clinthammer_RobotNapPercussion.tres")
+	game_music_set.add("res://sound/music/GameLoop_Clinthammer_TsBass.tres")
+	game_music_set.add("res://sound/music/GameLoop_DayTripper13_RemixBeat3142011.tres")
+	game_music_set.add("res://sound/music/GameLoop_Nomiqbomi_Transist2.tres")
+	game_music_set.shuffle()
+		
+	play_song(title_song)
+	
 	game = get_node("VBoxContainer/ViewportContainer/Viewport/Game")
 	game.main = self
 	gui = get_node("VBoxContainer/GUI")
@@ -21,6 +60,7 @@ func _ready():
 	game.connect("score_changed", gui, "display_score")
 	game.connect("ship_count_changed", gui, "display_ships")
 	game.connect("level_changed", gui, "display_level")
+	game.connect("level_up", self, "play_next_game_song")
 	game.connect("game_over", self, "on_game_over")
 	
 	gui.display_score(game.score)
@@ -39,6 +79,7 @@ func _ready():
 func on_new_pressed():
 	$SoundPlayer.stream = menu_select
 	$SoundPlayer.play()
+	game_music_set.shuffle()
 	hide_game_menu()
 	game.new_game()
 	pause_popup.is_game_active = true
@@ -96,14 +137,23 @@ func on_game_over():
 	game.active = false
 	pause_popup.is_game_active = false
 	show_game_menu()
+	play_song(title_song)
 
-func play_music(music):
+func play_next_game_song():
+	play_song(game_music_set.get_next_song())
+
+func play_song(song):
+	print("Now playing: %s" % song)
+	$MusicPlayer.stream = song
+	$MusicPlayer.play()
+
+func play_stinger(music):
 	if music == "game over":
-		$MusicPlayer.stream = game_over
-		$MusicPlayer.play()
+		$StingPlayer.stream = game_over
+		$StingPlayer.play()
 	elif music == "level clear":
-		$MusicPlayer.stream = level_clear
-		$MusicPlayer.play()
+		$StingPlayer.stream = level_clear
+		$StingPlayer.play()
 	else:
 		print("Unknown song: %s" % music)
 

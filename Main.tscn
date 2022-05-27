@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Game.tscn" type="PackedScene" id=1]
 [ext_resource path="res://GUI.tscn" type="PackedScene" id=2]
@@ -7,12 +7,14 @@
 [ext_resource path="res://sound/LevelClear.tres" type="AudioStream" id=5]
 [ext_resource path="res://sound/GameOver.tres" type="AudioStream" id=6]
 [ext_resource path="res://sound/MenuSelect.tres" type="AudioStream" id=7]
+[ext_resource path="res://sound/music/TitleAmbientLoop.tres" type="AudioStream" id=8]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 level_clear = ExtResource( 5 )
 game_over = ExtResource( 6 )
 menu_select = ExtResource( 7 )
+title_song = ExtResource( 8 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 1024.0
@@ -51,5 +53,8 @@ margin_right = 0.0
 margin_bottom = 0.0
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 
 [node name="SoundPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="StingPlayer" type="AudioStreamPlayer" parent="."]

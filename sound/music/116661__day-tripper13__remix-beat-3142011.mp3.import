@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/116661__day-tripper13__remix-beat-3142011.mp3-c36d1acd70678551b3b99289335d3546.mp3str"
+
+[deps]
+
+source_file="res://sound/music/116661__day-tripper13__remix-beat-3142011.mp3"
+dest_files=[ "res://.import/116661__day-tripper13__remix-beat-3142011.mp3-c36d1acd70678551b3b99289335d3546.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/179514__clinthammer__clinthammermusic-electro-beat.mp3-4b8ba9a1952d1d7c6c133b7eff9dff9c.mp3str"
+
+[deps]
+
+source_file="res://sound/music/179514__clinthammer__clinthammermusic-electro-beat.mp3"
+dest_files=[ "res://.import/179514__clinthammer__clinthammermusic-electro-beat.mp3-4b8ba9a1952d1d7c6c133b7eff9dff9c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

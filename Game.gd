@@ -34,6 +34,7 @@ var player_ship : Area2D
 signal score_changed
 signal ship_count_changed
 signal level_changed
+signal level_up
 signal game_over
 
 func _ready():
@@ -64,6 +65,7 @@ func new_game():
 	emit_signal("score_changed", score)
 	level = 1
 	emit_signal("level_changed", level)
+	emit_signal("level_up")
 	active = true
 	
 	clear()
@@ -115,16 +117,16 @@ func _process(delta):
 		
 		var announcer = get_node("Overlay/AnnouncerLabel")
 		announcer.show_message("Clear!", 2)
-		main.play_music("level clear")
+		main.play_stinger("level clear")
 		
 		level += 1
-		emit_signal("level_changed", level)
+		emit_signal("level_up")
 		announcer.show_message("Level %s" % level, 2)
 
-		$TimerSound.play()
-		main.schedule_call(1, $TimerSound, "play")
-		main.schedule_call(2, $TimerSound, "play")
-		main.schedule_call(3, $TimerSound, "play")
+		main.schedule_call(4, $TimerSound, "play")
+		main.schedule_call(5, $TimerSound, "play")
+		main.schedule_call(6, $TimerSound, "play")
+		main.schedule_call(7, $TimerSound, "play")
 		announcer.show_message("3 ...", 1)
 		announcer.show_message("2 ...", 1)
 		announcer.show_message("1 ...", 1)
@@ -250,6 +252,6 @@ func _on_player_destroyed(_player):
 		main.schedule_call(3, self, "show_game_over")
 
 func show_game_over():
-	main.play_music("game over")
+	main.play_stinger("game over")
 	$Overlay/AnnouncerLabel.show_message("Game over", 5)
 	main.schedule_call(5, self, "emit_signal", ["game_over"])

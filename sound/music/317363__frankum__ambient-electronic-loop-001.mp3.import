@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/317363__frankum__ambient-electronic-loop-001.mp3-47e9a83da2e43ad4d348fe6bd1b41d23.mp3str"
+
+[deps]
+
+source_file="res://sound/music/317363__frankum__ambient-electronic-loop-001.mp3"
+dest_files=[ "res://.import/317363__frankum__ambient-electronic-loop-001.mp3-47e9a83da2e43ad4d348fe6bd1b41d23.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

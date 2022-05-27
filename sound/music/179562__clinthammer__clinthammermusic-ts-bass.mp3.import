@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/179562__clinthammer__clinthammermusic-ts-bass.mp3-c03f528e3d51c8e07eb3898dac4fa88b.mp3str"
+
+[deps]
+
+source_file="res://sound/music/179562__clinthammer__clinthammermusic-ts-bass.mp3"
+dest_files=[ "res://.import/179562__clinthammer__clinthammermusic-ts-bass.mp3-c03f528e3d51c8e07eb3898dac4fa88b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
