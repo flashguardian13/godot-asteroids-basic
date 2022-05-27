@@ -36,5 +36,6 @@ one_shot = true
 
 [node name="TimerSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+bus = "Sound"
 
 [connection signal="timeout" from="Overlay/AnnouncerLabel/Timer" to="Overlay/AnnouncerLabel" method="_on_timeout"]

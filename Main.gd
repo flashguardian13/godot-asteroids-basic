@@ -35,6 +35,7 @@ var game_music_set : GameMusicSet
 var game : Node2D
 var gui : MarginContainer
 var pause_popup : PopupPanel
+var settings_popup : PopupPanel
 
 var scheduled_calls : Array
 var elapsed_time : float
@@ -56,6 +57,7 @@ func _ready():
 	game.main = self
 	gui = get_node("VBoxContainer/GUI")
 	pause_popup = get_node("PausePopupDialog")
+	settings_popup = get_node("SettingsPopupDialog")
 	
 	game.connect("score_changed", gui, "display_score")
 	game.connect("ship_count_changed", gui, "display_ships")
@@ -67,12 +69,15 @@ func _ready():
 	gui.display_ships(game.ships_remaining)
 	gui.display_level(game.level)
 	
-	var button = pause_popup.get_node("VBoxContainer/VBoxContainer/NewButton")
-	button.connect("pressed", self, "on_new_pressed")
-	button = pause_popup.get_node("VBoxContainer/VBoxContainer/ResumeButton")
-	button.connect("pressed", self, "on_resume_pressed")
-	button = pause_popup.get_node("VBoxContainer/VBoxContainer/QuitButton")
-	button.connect("pressed", self, "on_quit_pressed")
+	var pause_popup_button_configs:Dictionary = {
+		"NewButton": "on_new_pressed",
+		"ResumeButton": "on_resume_pressed",
+		"SettingsButton": "on_settings_pressed",
+		"QuitButton": "on_quit_pressed"
+	}
+	for bid in pause_popup_button_configs.keys():
+		var button = pause_popup.get_node("VBoxContainer/VBoxContainer/%s" % bid)
+		button.connect("pressed", self, pause_popup_button_configs[bid])
 	
 	show_game_menu()
 
@@ -92,6 +97,11 @@ func on_resume_pressed():
 		game.new_game()
 		pause_popup.is_game_active = true
 
+func on_settings_pressed():
+	$SoundPlayer.stream = menu_select
+	$SoundPlayer.play()
+	show_settings_menu()
+
 func on_quit_pressed():
 	$SoundPlayer.stream = menu_select
 	$SoundPlayer.play()
@@ -99,13 +109,20 @@ func on_quit_pressed():
 
 func show_game_menu():
 	pause_popup.get_node("VBoxContainer/VBoxContainer/ResumeButton").visible = game.active
-	pause_popup.set_position(get_viewport().size * 0.5 - pause_popup.rect_size * 0.5)
-	pause_popup.call_deferred("show")
+	pause_popup.set_as_minsize()
+	
+	pause_popup.call_deferred("popup_centered")
 	get_tree().paused = true
 
 func hide_game_menu():
 	pause_popup.hide()
 	get_tree().paused = false
+
+func show_settings_menu():
+	settings_popup.popup_centered()
+
+func hide_settings_menu():
+	settings_popup.hide()
 
 func toggle_game_menu():
 	if pause_popup.visible:

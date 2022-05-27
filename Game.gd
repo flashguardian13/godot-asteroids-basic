@@ -228,6 +228,7 @@ func spawn_player_bullet():
 
 func play_sound_at_position(stream : AudioStream, position : Vector2):
 	var sound:AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+	sound.bus = "Sound"
 	sound.stream = stream
 	sound.position = position
 	add_child(sound)
