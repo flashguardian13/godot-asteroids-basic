@@ -19,3 +19,9 @@ func _input(event):
 func _on_BackButton_pressed():
 	$ButtonClickPlayer.play()
 	hide()
+
+func _on_SettingsPopupDialog_about_to_show():
+	var volume_sliders_container = $MarginContainer/VBoxContainer
+	volume_sliders_container.get_node("MainVolumeSliderContainer").set_bus(AudioServer.get_bus_index("Master"))
+	volume_sliders_container.get_node("MusicVolumeSliderContainer").set_bus(AudioServer.get_bus_index("Music"))
+	volume_sliders_container.get_node("SoundVolumeSliderContainer").set_bus(AudioServer.get_bus_index("Sound"))
