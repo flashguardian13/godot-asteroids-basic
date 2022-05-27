@@ -143,10 +143,28 @@ func on_game_over():
 func play_next_game_song():
 	play_song(game_music_set.get_next_song())
 
+var current_song = null
+
 func play_song(song):
+	if song == current_song:
+		return
+	
+	current_song = song
 	print("Now playing: %s" % song)
-	$MusicPlayer.stream = song
-	$MusicPlayer.play()
+	
+	if $MusicPlayer1.playing && $MusicPlayer2.playing:
+		var remaining1 = $MusicPlayer1/Tween.get_runtime() - $MusicPlayer1/Tween.tell()
+		var remaining2 = $MusicPlayer2/Tween.get_runtime() - $MusicPlayer2/Tween.tell()
+		yield(get_tree().create_timer(min(remaining1, remaining2)), "timeout")
+	
+	if $MusicPlayer1.playing:
+		$MusicPlayer1.fade_out()
+		$MusicPlayer2.fade_in(current_song)
+	elif $MusicPlayer2.playing:
+		$MusicPlayer1.fade_in(current_song)
+		$MusicPlayer2.fade_out()
+	else:
+		$MusicPlayer1.fade_in(current_song)
 
 func play_stinger(music):
 	if music == "game over":
