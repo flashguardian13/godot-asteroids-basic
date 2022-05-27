@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/450614__breviceps__8-bit-collect-sound-timer-countdown.ogg-a5485f4901c3bff7e61a2375775463a8.oggstr"
+
+[deps]
+
+source_file="res://sound/450614__breviceps__8-bit-collect-sound-timer-countdown.ogg"
+dest_files=[ "res://.import/450614__breviceps__8-bit-collect-sound-timer-countdown.ogg-a5485f4901c3bff7e61a2375775463a8.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

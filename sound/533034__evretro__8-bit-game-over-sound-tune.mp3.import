@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/533034__evretro__8-bit-game-over-sound-tune.mp3-7019df5d8dbbff201424ad343964d2f8.mp3str"
+
+[deps]
+
+source_file="res://sound/533034__evretro__8-bit-game-over-sound-tune.mp3"
+dest_files=[ "res://.import/533034__evretro__8-bit-game-over-sound-tune.mp3-7019df5d8dbbff201424ad343964d2f8.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

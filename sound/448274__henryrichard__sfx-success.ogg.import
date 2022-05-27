@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/448274__henryrichard__sfx-success.ogg-f5f25a4d2a728f281cc5f0fb614a29c5.oggstr"
+
+[deps]
+
+source_file="res://sound/448274__henryrichard__sfx-success.ogg"
+dest_files=[ "res://.import/448274__henryrichard__sfx-success.ogg-f5f25a4d2a728f281cc5f0fb614a29c5.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

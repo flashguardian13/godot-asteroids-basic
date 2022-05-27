@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/404742__owlstorm__retro-video-game-sfx-explode-5.ogg-666ad13975d9fb8b95188df4a7a8e158.oggstr"
+
+[deps]
+
+source_file="res://sound/404742__owlstorm__retro-video-game-sfx-explode-5.ogg"
+dest_files=[ "res://.import/404742__owlstorm__retro-video-game-sfx-explode-5.ogg-666ad13975d9fb8b95188df4a7a8e158.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

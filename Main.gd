@@ -1,5 +1,10 @@
 extends Node2D
 
+export(AudioStream) var level_clear
+export(AudioStream) var game_over
+
+export(AudioStream) var menu_select
+
 var game : Node2D
 var gui : MarginContainer
 var pause_popup : PopupPanel
@@ -32,17 +37,23 @@ func _ready():
 	show_game_menu()
 
 func on_new_pressed():
+	$SoundPlayer.stream = menu_select
+	$SoundPlayer.play()
 	hide_game_menu()
 	game.new_game()
 	pause_popup.is_game_active = true
 
 func on_play_pressed():
+	$SoundPlayer.stream = menu_select
+	$SoundPlayer.play()
 	hide_game_menu()
 	if !game.active:
 		game.new_game()
 		pause_popup.is_game_active = true
 
 func on_quit_pressed():
+	$SoundPlayer.stream = menu_select
+	$SoundPlayer.play()
 	get_tree().quit()
 
 func show_game_menu():
@@ -85,6 +96,16 @@ func on_game_over():
 	game.active = false
 	pause_popup.is_game_active = false
 	show_game_menu()
+
+func play_music(music):
+	if music == "game over":
+		$MusicPlayer.stream = game_over
+		$MusicPlayer.play()
+	elif music == "level clear":
+		$MusicPlayer.stream = level_clear
+		$MusicPlayer.play()
+	else:
+		print("Unknown song: %s" % music)
 
 func _input(event):
 	if event is InputEventKey:

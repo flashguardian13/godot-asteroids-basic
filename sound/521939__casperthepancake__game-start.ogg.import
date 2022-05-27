@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/521939__casperthepancake__game-start.ogg-4748877a869cf9d4801ea04d6568f6a6.oggstr"
+
+[deps]
+
+source_file="res://sound/521939__casperthepancake__game-start.ogg"
+dest_files=[ "res://.import/521939__casperthepancake__game-start.ogg-4748877a869cf9d4801ea04d6568f6a6.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

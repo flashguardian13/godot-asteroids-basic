@@ -3,7 +3,13 @@ extends PopupPanel
 var is_game_active = false
 
 func _ready():
-	pass
+	var button_container = $VBoxContainer/VBoxContainer
+	var button = button_container.get_node("PlayButton")
+	button.connect("mouse_entered", $SoundPlayer, "play")
+	button = button_container.get_node("NewButton")
+	button.connect("mouse_entered", $SoundPlayer, "play")
+	button = button_container.get_node("QuitButton")
+	button.connect("mouse_entered", $SoundPlayer, "play")
 
 func _input(event):
 	if visible == false || !is_game_active:

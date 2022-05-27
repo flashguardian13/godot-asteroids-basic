@@ -5,6 +5,7 @@ export(PackedScene) var player_bullet_scene
 export(PackedScene) var player_scene
 
 export(AudioStream) var blaster_fire
+export(AudioStream) var player_explosion
 
 class AudioStreamPool:
 	var pool : Array
@@ -88,6 +89,10 @@ func spawn_player(spawn_location = "random"):
 	player_ship.velocity.y = 0
 	player_ship.visible = true
 	player_ship.make_incorporeal()
+	$TimerSound.play()
+	main.schedule_call(1, $TimerSound, "play")
+	main.schedule_call(2, $TimerSound, "play")
+	main.schedule_call(3, $TimerSound, "play")
 	main.schedule_call(3, player_ship, "make_corporeal")
 	player_ship.connect("destroyed", self, "_on_player_destroyed")
 	add_child(player_ship)
@@ -110,11 +115,16 @@ func _process(delta):
 		
 		var announcer = get_node("Overlay/AnnouncerLabel")
 		announcer.show_message("Clear!", 2)
+		main.play_music("level clear")
 		
 		level += 1
 		emit_signal("level_changed", level)
 		announcer.show_message("Level %s" % level, 2)
-		
+
+		$TimerSound.play()
+		main.schedule_call(1, $TimerSound, "play")
+		main.schedule_call(2, $TimerSound, "play")
+		main.schedule_call(3, $TimerSound, "play")
 		announcer.show_message("3 ...", 1)
 		announcer.show_message("2 ...", 1)
 		announcer.show_message("1 ...", 1)
@@ -226,15 +236,20 @@ func _on_player_destroyed(_player):
 	var announcer = get_node("Overlay/AnnouncerLabel")
 	var exclamation = exclamations[randi() % exclamations.size()]
 	
+	announcer.show_message(exclamation, 3)
+	play_sound_at_position(player_explosion, player_ship.position)
 	remove_child(player_ship)
 	player_ship.queue_free()
 	player_ship = null
-	announcer.show_message(exclamation, 3)
 	
 	if ships_remaining > 0:
 		ships_remaining -= 1
 		emit_signal("ship_count_changed", ships_remaining)
 		main.schedule_call(3, self, "spawn_player")
 	else:
-		announcer.show_message("Game over", 5)
-		main.schedule_call(8, self, "emit_signal", ["game_over"])
+		main.schedule_call(3, self, "show_game_over")
+
+func show_game_over():
+	main.play_music("game over")
+	$Overlay/AnnouncerLabel.show_message("Game over", 5)
+	main.schedule_call(5, self, "emit_signal", ["game_over"])
