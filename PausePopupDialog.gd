@@ -4,7 +4,7 @@ var is_game_active = false
 
 func _ready():
 	var button_container = $VBoxContainer/VBoxContainer
-	var button = button_container.get_node("PlayButton")
+	var button = button_container.get_node("ResumeButton")
 	button.connect("mouse_entered", $SoundPlayer, "play")
 	button = button_container.get_node("NewButton")
 	button.connect("mouse_entered", $SoundPlayer, "play")

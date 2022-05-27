@@ -58,3 +58,4 @@ pause_mode = 2
 [node name="SoundPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="StingPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2

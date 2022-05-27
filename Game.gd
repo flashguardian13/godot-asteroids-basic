@@ -59,6 +59,8 @@ func clear():
 		asteroid.queue_free()
 
 func new_game():
+	is_level_in_progress = false
+	
 	ships_remaining = 2
 	emit_signal("ship_count_changed", ships_remaining)
 	score = 0
@@ -66,11 +68,15 @@ func new_game():
 	level = 1
 	emit_signal("level_changed", level)
 	emit_signal("level_up")
-	active = true
 	
 	clear()
+	if player_ship != null:
+		remove_child(player_ship)
+		player_ship.queue_free()
 	spawn_player("center")
 
+	active = true
+	
 	var announcer = get_node("Overlay/AnnouncerLabel")
 	announcer.show_message("3 ...", 1)
 	announcer.show_message("2 ...", 1)

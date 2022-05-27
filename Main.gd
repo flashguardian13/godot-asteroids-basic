@@ -69,8 +69,8 @@ func _ready():
 	
 	var button = pause_popup.get_node("VBoxContainer/VBoxContainer/NewButton")
 	button.connect("pressed", self, "on_new_pressed")
-	button = pause_popup.get_node("VBoxContainer/VBoxContainer/PlayButton")
-	button.connect("pressed", self, "on_play_pressed")
+	button = pause_popup.get_node("VBoxContainer/VBoxContainer/ResumeButton")
+	button.connect("pressed", self, "on_resume_pressed")
 	button = pause_popup.get_node("VBoxContainer/VBoxContainer/QuitButton")
 	button.connect("pressed", self, "on_quit_pressed")
 	
@@ -84,7 +84,7 @@ func on_new_pressed():
 	game.new_game()
 	pause_popup.is_game_active = true
 
-func on_play_pressed():
+func on_resume_pressed():
 	$SoundPlayer.stream = menu_select
 	$SoundPlayer.play()
 	hide_game_menu()
@@ -98,8 +98,9 @@ func on_quit_pressed():
 	get_tree().quit()
 
 func show_game_menu():
-	pause_popup.show()
+	pause_popup.get_node("VBoxContainer/VBoxContainer/ResumeButton").visible = game.active
 	pause_popup.set_position(get_viewport().size * 0.5 - pause_popup.rect_size * 0.5)
+	pause_popup.call_deferred("show")
 	get_tree().paused = true
 
 func hide_game_menu():
