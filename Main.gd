@@ -40,7 +40,11 @@ var settings_popup : PopupPanel
 var scheduled_calls : Array
 var elapsed_time : float
 
+var settings_file : String = "user://settings.save"
+
 func _ready():
+	load_settings()
+	
 	game_music_set = GameMusicSet.new()
 	game_music_set.add("res://sound/music/GameLoop_Clinthammer_ElectroBeat2.tres")
 	game_music_set.add("res://sound/music/GameLoop_Clinthammer_ElectroBeat.tres")
@@ -80,6 +84,35 @@ func _ready():
 		button.connect("pressed", self, pause_popup_button_configs[bid])
 	
 	show_game_menu()
+
+func load_settings():
+	var f:File = File.new()
+	if f.file_exists(settings_file):
+		f.open(settings_file, File.READ)
+		while !f.eof_reached():
+			var line = f.get_line()
+			if line.empty():
+				continue
+				
+			var pair = line.split("=")
+			var key:String = pair[0]
+			var key_parts = key.split(".")
+			var value:String = pair[1]
+			
+			if key.begins_with("audio.volume."):
+				var idx = AudioServer.get_bus_index(key_parts[2])
+				AudioServer.set_bus_volume_db(idx, value.to_float())
+
+func save_settings():
+	var f:File = File.new()
+	f.open(settings_file, File.WRITE)
+	
+	for bus_name in ["Master", "Music", "Sound"]:
+		var idx = AudioServer.get_bus_index(bus_name)
+		var volume = AudioServer.get_bus_volume_db(idx)
+		f.store_line("audio.volume.%s=%s" % [bus_name, volume])
+	
+	f.close()
 
 func on_new_pressed():
 	$SoundPlayer.stream = menu_select
@@ -200,3 +233,6 @@ func _input(event):
 			if key_event.scancode == KEY_ESCAPE:
 				print("main detected escape")
 				toggle_game_menu()
+
+func _on_tree_exiting():
+	save_settings()

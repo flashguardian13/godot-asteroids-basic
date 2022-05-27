@@ -81,5 +81,6 @@ bus = "Sound"
 pause_mode = 2
 bus = "Music"
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="tween_completed" from="MusicPlayer1/Tween" to="MusicPlayer1" method="_on_tween_completed"]
 [connection signal="tween_completed" from="MusicPlayer2/Tween" to="MusicPlayer2" method="_on_tween_completed"]
