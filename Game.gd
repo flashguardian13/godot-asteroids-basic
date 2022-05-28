@@ -131,6 +131,7 @@ func _process(delta):
 		main.play_stinger("level clear")
 		
 		level += 1
+		emit_signal("level_changed", level)
 		emit_signal("level_up")
 		announcer.show_message("Level %s" % level, 2)
 
