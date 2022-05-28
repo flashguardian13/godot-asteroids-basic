@@ -61,14 +61,14 @@ margin_bottom = 57.0
 
 [node name="MusicPlayer1" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-bus = "Music"
+bus = "Songs"
 script = ExtResource( 9 )
 
 [node name="Tween" type="Tween" parent="MusicPlayer1"]
 
 [node name="MusicPlayer2" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-bus = "Music"
+bus = "Songs"
 script = ExtResource( 9 )
 
 [node name="Tween" type="Tween" parent="MusicPlayer2"]
@@ -79,7 +79,9 @@ bus = "Sound"
 
 [node name="StingPlayer" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-bus = "Music"
+bus = "Stingers"
+
+[node name="SongFaderTween" type="Tween" parent="."]
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="tween_completed" from="MusicPlayer1/Tween" to="MusicPlayer1" method="_on_tween_completed"]

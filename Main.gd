@@ -202,6 +202,8 @@ func play_song(song):
 	current_song = song
 	print("Now playing: %s" % song)
 	
+	set_song_volume(0)
+	
 	if $MusicPlayer1.playing && $MusicPlayer2.playing:
 		var remaining1 = $MusicPlayer1/Tween.get_runtime() - $MusicPlayer1/Tween.tell()
 		var remaining2 = $MusicPlayer2/Tween.get_runtime() - $MusicPlayer2/Tween.tell()
@@ -225,6 +227,24 @@ func play_stinger(music):
 		$StingPlayer.play()
 	else:
 		print("Unknown song: %s" % music)
+
+func set_song_volume(volume):
+	var idx = AudioServer.get_bus_index("Songs")
+	AudioServer.set_bus_volume_db(idx, volume)
+
+func fade_in_songs(seconds:float):
+	var tween:Tween = $SongFaderTween
+	tween.interpolate_method(self, "set_song_volume", -60, 0, seconds, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+
+func duck_songs(seconds:float):
+	var tween:Tween = $SongFaderTween
+	tween.interpolate_method(self, "set_song_volume", -6, 0, seconds, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+
+func cut_songs():
+	$MusicPlayer1.stop()
+	$MusicPlayer2.stop()
 
 func _input(event):
 	if event is InputEventKey:

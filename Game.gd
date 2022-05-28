@@ -129,6 +129,7 @@ func _process(delta):
 		var announcer = get_node("Overlay/AnnouncerLabel")
 		announcer.show_message("Clear!", 2)
 		main.play_stinger("level clear")
+		main.duck_songs(5)
 		
 		level += 1
 		emit_signal("level_changed", level)
@@ -278,8 +279,10 @@ func _on_player_destroyed(_player):
 	if ships_remaining > 0:
 		ships_remaining -= 1
 		emit_signal("ship_count_changed", ships_remaining)
+		main.fade_in_songs(5)
 		main.schedule_call(3, self, "spawn_player")
 	else:
+		main.cut_songs()
 		main.schedule_call(3, self, "show_game_over")
 
 func show_game_over():
