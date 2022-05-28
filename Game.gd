@@ -7,6 +7,8 @@ export(PackedScene) var player_scene
 export(AudioStream) var blaster_fire
 export(AudioStream) var player_explosion
 
+export(PackedScene) var asteroid_hit_fx
+
 class AudioStreamPool:
 	var pool : Array
 	
@@ -116,6 +118,10 @@ func populate():
 	is_level_in_progress = true
 
 func _process(delta):
+	for fx in get_tree().get_nodes_in_group("one_shot_particles"):
+		if !fx.emitting:
+			fx.queue_free()
+	
 	var asteroids = get_tree().get_nodes_in_group("asteroids")
 	if is_level_in_progress && asteroids.size() <= 0:
 		is_level_in_progress = false
@@ -183,12 +189,28 @@ func spawn_asteroid(size_category, position = null, velocity = null):
 	return asteroid
 
 func hit_asteroid(_asteroid, impact_position):
+	var fx:Particles2D = asteroid_hit_fx.instance()
+	fx.add_to_group("one_shot_particles")
+	fx.position = impact_position
+	fx.emitting = true
+	add_child(fx)
 	play_sound_at_position(asteroid_hit_sound_pool.sample(), impact_position)
-	
+
 func split_asteroid(asteroid, impact_position):
 	score += 100
 	emit_signal("score_changed", score)
 	
+	var fx:Particles2D = asteroid_hit_fx.instance()
+	fx.add_to_group("one_shot_particles")
+	fx.position = asteroid.position
+	if asteroid.size_category == 3:
+		fx.amount = 12
+	if asteroid.size_category == 2:
+		fx.amount = 7
+	if asteroid.size_category == 1:
+		fx.amount = 3
+	fx.emitting = true
+	add_child(fx)
 	play_sound_at_position(asteroid_break_sound_pool.sample(), impact_position)
 	
 	if asteroid.size_category <= 1:
