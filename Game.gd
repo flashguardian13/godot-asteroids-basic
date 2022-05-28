@@ -51,7 +51,6 @@ func _ready():
 	while i <= 4:
 		asteroid_break_sound_pool.add("res://sound/asteroid_breaks/AsteroidBreak0%s.tres" % i)
 		i += 1
-	
 
 func clear():
 	for asteroid in get_tree().get_nodes_in_group("asteroids"):
@@ -198,8 +197,10 @@ func split_asteroid(asteroid, impact_position):
 	var i = 0
 	var new_size = asteroid.size_category - 1
 	var asteroids = []
-	while i < 3:
-		var dir = Vector2(1, 0).rotated(2 * PI * i / 3)
+	var fragment_count = randi() % 3 + 2
+	var random_angle = randf() * 2 * PI
+	while i < fragment_count:
+		var dir = Vector2(1, 0).rotated(2 * PI * i / fragment_count + random_angle)
 		var new_asteroid = spawn_asteroid(
 			new_size,
 			asteroid.position + dir * 20 * new_size,
