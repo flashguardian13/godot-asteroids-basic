@@ -50,6 +50,20 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="ReverseThrusterParticles2D" type="Particles2D" parent="."]
+position = Vector2( 0, -15 )
+rotation = -1.5708
+emitting = false
+lifetime = 0.2
+visibility_rect = Rect2( -15, -1.4673, 34.3734, 2.95236 )
+local_coords = false
+draw_order = 1
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": ""
+}
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
